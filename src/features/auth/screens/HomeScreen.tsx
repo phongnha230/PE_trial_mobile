@@ -10,7 +10,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { colors } from '../../../shared/theme/colors';
-import { AuthStackParamList } from '../../../app/navigation/types';
+import { AuthStackParamList } from '../../../core/navigation/types';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Home'>;
 

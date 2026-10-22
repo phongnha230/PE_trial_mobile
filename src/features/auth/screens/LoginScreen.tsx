@@ -17,7 +17,7 @@ import { validateEmail, validatePassword } from '../../../shared/utils/validator
 import { CustomTextInput } from '../../../shared/components/inputs/CustomTextInput';
 import { Button } from '../../../shared/components/buttons/Button';
 import { ErrorBanner } from '../../../shared/components/feedback/ErrorBanner';
-import { AuthStackParamList } from '../../../app/navigation/types';
+import { AuthStackParamList } from '../../../core/navigation/types';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 

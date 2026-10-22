@@ -20,7 +20,7 @@ import { bookApi } from '../api/bookApi';
 import { GENRES, STATUSES } from '../../../shared/constants/appConstants';
 import { validateBookForm, BookValidationErrors } from '../../../shared/utils/validators';
 import { Book } from '../types/book.types';
-import { AppStackParamList } from '../../../app/navigation/types';
+import { AppStackParamList } from '../../../core/navigation/types';
 
 type Props = NativeStackScreenProps<AppStackParamList, 'Detail'>;
 

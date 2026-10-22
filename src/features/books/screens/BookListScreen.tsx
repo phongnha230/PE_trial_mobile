@@ -20,7 +20,7 @@ import { BookSummary } from '../components/BookSummary';
 import { EmptyState } from '../../../shared/components/feedback/EmptyState';
 import { sortBooks, calculateStatusBreakdown } from '../../../shared/utils/helpers';
 import { Book, BookFilterState } from '../types/book.types';
-import { AppStackParamList } from '../../../app/navigation/types';
+import { AppStackParamList } from '../../../core/navigation/types';
 
 type Props = NativeStackScreenProps<AppStackParamList, 'List'>;
 

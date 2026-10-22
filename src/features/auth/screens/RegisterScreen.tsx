@@ -22,7 +22,7 @@ import { CustomTextInput } from '../../../shared/components/inputs/CustomTextInp
 import { Button } from '../../../shared/components/buttons/Button';
 import { ErrorBanner } from '../../../shared/components/feedback/ErrorBanner';
 import { SuccessBanner } from '../../../shared/components/feedback/SuccessBanner';
-import { AuthStackParamList } from '../../../app/navigation/types';
+import { AuthStackParamList } from '../../../core/navigation/types';
 import { EXACT_MESSAGES } from '../../../shared/constants/appConstants';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Register'>;
