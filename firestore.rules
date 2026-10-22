@@ -1,0 +1,69 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidTitle(title) {
+      return title is string && title.trim().size() > 0 && title.size() <= 100;
+    }
+
+    function isValidAuthor(author) {
+      return author is string && author.trim().size() > 0 && author.size() <= 60;
+    }
+
+    function isValidGenre(genre) {
+      return genre in ['Fiction', 'Non-Fiction', 'Academic', 'Other'];
+    }
+
+    function isValidStatus(status) {
+      return status in ['To Read', 'Reading', 'Finished'];
+    }
+
+    function isValidRating(data) {
+      return !('rating' in data) || data.rating == null || (data.rating is int && data.rating >= 0 && data.rating <= 5);
+    }
+
+    function isValidNotes(data) {
+      return !('notes' in data) || data.notes == null || (data.notes is string && data.notes.size() <= 300);
+    }
+
+    function isValidFavorite(data) {
+      return !('favorite' in data) || data.favorite is bool;
+    }
+
+    function isValidBookData(data) {
+      return isValidTitle(data.title)
+        && isValidAuthor(data.author)
+        && isValidGenre(data.genre)
+        && isValidStatus(data.status)
+        && isValidRating(data)
+        && isValidNotes(data)
+        && isValidFavorite(data);
+    }
+
+    match /books/{bookId} {
+      // Logged in user can only read their own rows
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+
+      // Logged in user can create only their own rows with valid data
+      allow create: if isAuthenticated()
+        && request.resource.data.userId == request.auth.uid
+        && isValidBookData(request.resource.data);
+
+      // Logged in user can update only their own rows with valid data
+      allow update: if isOwner(resource.data.userId)
+        && request.resource.data.userId == request.auth.uid
+        && isValidBookData(request.resource.data);
+
+      // Logged in user can delete only their own rows
+      allow delete: if isOwner(resource.data.userId);
+    }
+  }
+}
