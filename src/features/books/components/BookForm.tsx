@@ -36,7 +36,7 @@ export const BookForm: React.FC<BookFormProps> = ({ existingBooks }) => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const validate = (t: string, a: string, g: string, s: string, r: string, n: string) => {
     return validateBookForm({
@@ -153,24 +153,35 @@ export const BookForm: React.FC<BookFormProps> = ({ existingBooks }) => {
   };
 
   return (
-    <View style={styles.card}>
+    <View testID="book-form" style={styles.card}>
       <TouchableOpacity
         style={styles.cardHeader}
         onPress={() => setIsCollapsed(!isCollapsed)}
+        activeOpacity={0.7}
       >
         <View style={styles.headerLeft}>
-          <Ionicons name="add-circle" size={22} color={colors.primary} />
-          <Text style={styles.cardTitle}>Add a book</Text>
+          <View style={styles.iconCircle}>
+            <Ionicons name={isCollapsed ? 'add' : 'remove'} size={18} color={colors.primary} />
+          </View>
+          <View>
+            <Text style={styles.cardTitle}>Add a book</Text>
+            {isCollapsed && (
+              <Text style={styles.cardSubtitle}>Tap to add new book to your shelf</Text>
+            )}
+          </View>
         </View>
-        <Ionicons
-          name={isCollapsed ? 'chevron-down' : 'chevron-up'}
-          size={20}
-          color={colors.textSecondary}
-        />
+        <View style={styles.badgeToggle}>
+          <Text style={styles.toggleText}>{isCollapsed ? '+ New Book' : 'Close'}</Text>
+          <Ionicons
+            name={isCollapsed ? 'chevron-down' : 'chevron-up'}
+            size={16}
+            color={colors.primary}
+          />
+        </View>
       </TouchableOpacity>
 
       {!isCollapsed && (
-        <View testID="book-form" style={styles.formContent}>
+        <View style={styles.formContent}>
           {/* Success banner */}
           {!!successMessage && (
             <View style={styles.successBanner}>
@@ -221,42 +232,45 @@ export const BookForm: React.FC<BookFormProps> = ({ existingBooks }) => {
             )}
           </View>
 
-          {/* Genre */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Genre *</Text>
-            <View style={[styles.pickerWrapper, errors.genre ? styles.inputError : null]}>
-              <Picker
-                selectedValue={genre}
-                onValueChange={handleGenreChange}
-                style={styles.picker}
-              >
-                {GENRES.map((g) => (
-                  <Picker.Item key={g} label={g} value={g} />
-                ))}
-              </Picker>
+          {/* Genre and Status in 2 Columns */}
+          <View style={styles.twoColRow}>
+            {/* Genre */}
+            <View style={[styles.inputGroup, styles.halfCol]}>
+              <Text style={styles.inputLabel}>Genre *</Text>
+              <View style={[styles.pickerWrapper, errors.genre ? styles.inputError : null]}>
+                <Picker
+                  selectedValue={genre}
+                  onValueChange={handleGenreChange}
+                  style={styles.picker}
+                >
+                  {GENRES.map((g) => (
+                    <Picker.Item key={g} label={g} value={g} />
+                  ))}
+                </Picker>
+              </View>
+              {!!errors.genre && (
+                <Text style={styles.fieldErrorText}>{errors.genre}</Text>
+              )}
             </View>
-            {!!errors.genre && (
-              <Text style={styles.fieldErrorText}>{errors.genre}</Text>
-            )}
-          </View>
 
-          {/* Status */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Status *</Text>
-            <View style={[styles.pickerWrapper, errors.status ? styles.inputError : null]}>
-              <Picker
-                selectedValue={status}
-                onValueChange={handleStatusChange}
-                style={styles.picker}
-              >
-                {STATUSES.map((s) => (
-                  <Picker.Item key={s} label={s} value={s} />
-                ))}
-              </Picker>
+            {/* Status */}
+            <View style={[styles.inputGroup, styles.halfCol]}>
+              <Text style={styles.inputLabel}>Status *</Text>
+              <View style={[styles.pickerWrapper, errors.status ? styles.inputError : null]}>
+                <Picker
+                  selectedValue={status}
+                  onValueChange={handleStatusChange}
+                  style={styles.picker}
+                >
+                  {STATUSES.map((s) => (
+                    <Picker.Item key={s} label={s} value={s} />
+                  ))}
+                </Picker>
+              </View>
+              {!!errors.status && (
+                <Text style={styles.fieldErrorText}>{errors.status}</Text>
+              )}
             </View>
-            {!!errors.status && (
-              <Text style={styles.fieldErrorText}>{errors.status}</Text>
-            )}
           </View>
 
           {/* Rating */}
@@ -285,7 +299,7 @@ export const BookForm: React.FC<BookFormProps> = ({ existingBooks }) => {
               value={notes}
               onChangeText={handleNotesChange}
               multiline
-              numberOfLines={3}
+              numberOfLines={2}
             />
             {!!errors.notes && (
               <Text style={styles.fieldErrorText}>{errors.notes}</Text>
@@ -315,8 +329,8 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.surface,
     borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
+    padding: 14,
+    marginBottom: 12,
     borderWidth: 1,
     borderColor: colors.border,
   },
@@ -328,44 +342,79 @@ const styles = StyleSheet.create({
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,
+    flex: 1,
+  },
+  iconCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#EEF2FF',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cardTitle: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: '700',
     color: colors.text,
   },
+  cardSubtitle: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginTop: 1,
+  },
+  badgeToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#EEF2FF',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    gap: 4,
+  },
+  toggleText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: colors.primary,
+  },
+  twoColRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  halfCol: {
+    flex: 1,
+  },
   formContent: {
     marginTop: 14,
-    gap: 12,
+    gap: 10,
   },
   inputGroup: {
     gap: 4,
   },
   inputLabel: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '600',
     color: colors.text,
   },
   input: {
-    height: 44,
+    height: 40,
     backgroundColor: colors.background,
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: 8,
-    paddingHorizontal: 12,
-    fontSize: 14,
+    paddingHorizontal: 10,
+    fontSize: 13,
     color: colors.text,
   },
   textArea: {
-    height: 70,
+    height: 56,
     backgroundColor: colors.background,
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    fontSize: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    fontSize: 13,
     color: colors.text,
     textAlignVertical: 'top',
   },

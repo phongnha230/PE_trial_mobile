@@ -197,23 +197,23 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   listContent: {
-    padding: 16,
-    paddingBottom: 40,
+    padding: 12,
+    paddingBottom: 30,
   },
   listHeadingRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    marginBottom: 10,
-    marginTop: 16,
+    marginBottom: 8,
+    marginTop: 10,
   },
   listHeadingText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '800',
     color: colors.text,
   },
   listHeadingCount: {
-    fontSize: 15,
+    fontSize: 14,
     color: colors.textSecondary,
   },
   loadingContainer: {
