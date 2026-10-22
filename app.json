@@ -23,6 +23,12 @@
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "01561201-9262-4a69-b318-ecda282c2ec2"
+      }
+    },
+    "owner": "nha1905"
   }
 }
