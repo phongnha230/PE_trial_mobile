@@ -31,7 +31,17 @@ yarn-error.*
 *.pem
 
 # local env files
+.env
 .env*.local
+firebaseConfig.json
+
+# exam report & scratch
+QE200012.docx
+*.docx
+generate_doc.js
+build_perfect_doc.js
+test_header.js
+batch_*.json
 
 # typescript
 *.tsbuildinfo
